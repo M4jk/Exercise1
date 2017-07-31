@@ -6,7 +6,7 @@ class Stack {
 	private:
 		int size;
 		int capacity;
-		int *elements; //tablica liczb;
+		int *elements;
 	public:
 		
 	Stack() {
@@ -20,7 +20,7 @@ class Stack {
 		this->size = 0;
 		elements = new int[capacity];
 	}
-	
+
 	void show() {
 		for(int i = size - 1 ; i>=0; i--)
 		cout << elements[i] << " ";
@@ -58,28 +58,45 @@ class Stack {
 		return size;
 	}
 	
+	Stack(const Stack &stack) {			//
+		capacity = stack.capacity;
+		this->size = stack.size;
+		elements = new int[capacity];
+		int i;
+		for(i = 0; i < capacity; i++)
+			elements[i] = stack.elements[i];
+	}
+	
 	~Stack() {
 		delete [] elements;
 	}
 	
+	void operator + (int value) {	//
+		push(value);
+	}
+	
+	friend ostream & operator << (ostream &wyjscie, const Stack &s);	//
 };
+
+	ostream & operator << (ostream &wyjscie, const Stack &s) {	//
+		for(int i = s.size - 1 ; i>=0; i--)
+			cout << s.elements[i] << " ";		
+	}
 
 int main(int argc, char** argv) {
 	try {
 		Stack stos(5);
-	//	cout << "Stos pusty: " << stos.isEmpty() << endl;
-		stos.push(10);
-	//	stos.stackPop();
-	//	stos.stackPop();
-		stos.push(20);
-		stos.push(30);
-	//	stos.Push(30);
-	//	stos.Push(30);
-	//	cout << "Stos pelen: " << stos.isFull() << endl;
-		stos.show();
-		cout << "\nZwrocona wartosc:" << stos.stackPop() << endl;
-		stos.show();
-		cout << "\nAktualny rozmiar stosu:" << stos.getSize() << endl;
+		stos + 5;
+		stos + 6;
+		stos + 8;
+		stos + 9;
+	//	stos.show();
+	//	cout << "\nZwrocona wartosc:" << stos.stackPop() << endl;
+	//	stos.show();
+	//	cout << "\nAktualny rozmiar stosu:" << stos.getSize() << endl;
+		Stack stos1(stos);
+	//	stos1.show();
+		cout << stos1;
 	}
 	catch(string x) {
 		cout << "Blad: " << x;
